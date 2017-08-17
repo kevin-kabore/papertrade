@@ -1,4 +1,4 @@
-##Paper Trade
+## Paper Trade
 
 Paper Trade is a MERN stack paper trading application
 

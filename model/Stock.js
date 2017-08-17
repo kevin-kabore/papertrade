@@ -7,7 +7,9 @@ var StockSchema = new Schema({
   symbol: String,
   current: Number,
   open: Number,
-  close: Number
+  close: Number,
+  purchase: Number,
+  selling: Number
 })
 
 

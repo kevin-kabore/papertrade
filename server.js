@@ -55,12 +55,40 @@ router.route('/stocks')
     stock.current = req.body.current
     stock.open = req.body.open
     stock.close = req.body.close
+    stock.purchase = req.body.purchase
+    stock.selling = req.body.selling
 
     stock.save(function(err) {
       if (err) {
         res.send(err)
       }
       res.json('Stock successfully posted')
+    })
+  })
+
+router.route('/stocks/:stock_id')
+  .put(function(req, res) {
+    Stock.findById(req.params.stock_id, function(err, stock) {
+      if (err) {
+        res.send(err)
+      }
+      (req.body.purchase) ? stock.purchase = req.body.purchase : null;
+      (req.body.selling) ? stock.selling = req.body.selling : null;
+
+      stock.save(function(err) {
+        if (err) {
+          res.send(err)
+        }
+        res.json({message: 'Stock has been purchased'});
+      })
+    })
+  })
+  .delete(function(req, res) {
+    Stock.remove({_id: req.params.stock_id}, function(err, stock) {
+      if (err) {
+        res.send(err)
+      }
+      res.json({message: 'Stock successfully deleted'})
     })
   })
 //Use our router configuration when we call /api
