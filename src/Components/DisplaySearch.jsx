@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import SearchStock from './SearchStock';
+import Stock from'./Stock';
 
 const APLPHA_ADVANTAGE_API = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AAPL&interval=1min&apikey=XITVOZ2Q9RFEFN9D'
 
@@ -35,6 +36,7 @@ class DisplaySearch extends Component {
     return(
       <div>
         <SearchStock onStockSearch={this.handleStockSearch}/>
+        <Stock />
         <ul>
           <li>Symbol: {this.state.data.symbol}</li>
           <li>Latest Quote: {this.state.data.latestQuote}</li>

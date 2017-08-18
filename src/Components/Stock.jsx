@@ -5,9 +5,7 @@ class Stock extends Component {
     super(props);
     this.state = {
       newTransaction: false,
-      purchase: '',
-      selling: '',
-      quantity: ''
+    
     }
     this.deleteStock = this.deleteStock.bind(this);
     this.completeNewTransaction = this.completeNewTransaction.bind(this);
@@ -66,13 +64,12 @@ class Stock extends Component {
     return (
       <div>
         <h2>{this.props.symbol}</h2>
+        <p>Date: {this.props.date}</p>
         <ul>
-          <li>Current: {this.props.current}</li>
           <li>Open: {this.props.open}</li>
+          <li>High: {this.props.high}</li>
+          <li>Low: {this.props.low}</li>
           <li>Close: {this.props.close}</li>
-          <li>Quantity: {this.props.quantity}</li>
-          <li>Purchase: {this.props.purchase}</li>
-          <li>Selling: {this.props.selling}</li>
         </ul>
         <button onClick={this.completeNewTransaction}>Buy</button>
         <button onClick={this.completeNewTransaction}>Sell</button>

@@ -52,11 +52,13 @@ router.route('/stocks')
   .post(function(req, res){
     var stock = new Stock();
     stock.symbol = req.body.symbol
-    stock.current = req.body.current
+    stock.date = req.body.date
     stock.open = req.body.open
+    stock.high = req.body.high
+    stock.low = req.body.low
     stock.close = req.body.close
-    stock.purchase = req.body.purchase
-    stock.selling = req.body.selling
+    stock.volume = req.body.volume
+
 
     stock.save(function(err) {
       if (err) {
