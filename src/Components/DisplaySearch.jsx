@@ -8,7 +8,7 @@ const APLPHA_ADVANTAGE_API = 'https://www.alphavantage.co/query?function=TIME_SE
 class DisplaySearch extends Component {
   constructor(props) {
     super(props);
-    this.state = {data: []}
+    this.state = {stock: [], searched: false}
     this.handleStockSearch = this.handleStockSearch.bind(this);
   }
   handleStockSearch(symbol){
@@ -19,33 +19,38 @@ class DisplaySearch extends Component {
         let stock = {
             symbol: res.data['Meta Data']['2. Symbol'],
             latestQuote: res.data['Meta Data']['3. Last Refreshed'],
-            lastestOpen: res.data['Time Series (1min)'][`${latestQuote}`]['1. open'],
+            latestOpen: res.data['Time Series (1min)'][`${latestQuote}`]['1. open'],
             latestHigh: res.data['Time Series (1min)'][`${latestQuote}`]['2. high'],
             latestLow: res.data['Time Series (1min)'][`${latestQuote}`]['3. low'],
             latestClose: res.data['Time Series (1min)'][`${latestQuote}`]['4. close'],
             latestVolume: res.data['Time Series (1min)'][`${latestQuote}`]['5. volume']
         }
 
-        this.setState({data: stock})
-        console.log(this.state.data)
+        this.setState({stock: stock, searched: true})
+        console.log(this.state.stock)
 
         // console.log(res.data['Time Series (1min)'][])
       })
   }
+  //add in <Stock/> passing in api data as props, and render in html
   render() {
     return(
       <div>
         <SearchStock onStockSearch={this.handleStockSearch}/>
-        <Stock />
-        <ul>
-          <li>Symbol: {this.state.data.symbol}</li>
-          <li>Latest Quote: {this.state.data.latestQuote}</li>
-          <li>Open: {this.state.data.lastestOpen}</li>
-          <li>High: {this.state.data.latestHigh}</li>
-          <li>Low: {this.state.data.latestLow}</li>
-          <li>Close: {this.state.data.latestClose}</li>
-          <li>Volume: {this.state.data.latestVolume}</li>
-        </ul>
+        {
+          (this.state.searched) ?
+            (
+              <Stock
+                symbol={this.state.stock.symbol}
+                date={this.state.stock.latestQuote}
+                open={this.state.stock.latestOpen}
+                high={this.state.stock.latestHigh}
+                low={this.state.stock.latestLow}
+                close={this.state.stock.latestClose}
+                volume={this.state.stock.latestVolume}
+              />
+            ) : null
+          }
       </div>
     )
   }

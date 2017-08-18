@@ -5,7 +5,7 @@ class Stock extends Component {
     super(props);
     this.state = {
       newTransaction: false,
-    
+
     }
     this.deleteStock = this.deleteStock.bind(this);
     this.completeNewTransaction = this.completeNewTransaction.bind(this);
@@ -70,6 +70,7 @@ class Stock extends Component {
           <li>High: {this.props.high}</li>
           <li>Low: {this.props.low}</li>
           <li>Close: {this.props.close}</li>
+          <li>Volume: {this.props.volume}</li>
         </ul>
         <button onClick={this.completeNewTransaction}>Buy</button>
         <button onClick={this.completeNewTransaction}>Sell</button>

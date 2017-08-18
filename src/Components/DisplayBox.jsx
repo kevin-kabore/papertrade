@@ -49,7 +49,7 @@ class DisplayBox extends Component {
   }
   componentDidMount() {
     this.loadStocksFromServer();
-    setInterval(this.loadStocksFromServer, this.props.pollInterval)
+    //setInterval(this.loadStocksFromServer, this.props.pollInterval)
   }
   render() {
     return (
