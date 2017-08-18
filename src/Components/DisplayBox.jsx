@@ -8,6 +8,7 @@ class DisplayBox extends Component {
   constructor(props) {
     super(props);
     this.state = { data: [] };
+    // this.getData = this.getData.bind(this)
     this.loadStocksFromServer = this.loadStocksFromServer.bind(this);
     this.handleStockSubmit = this.handleStockSubmit.bind(this);
     this.handleStockTransaction = this.handleStockTransaction.bind(this);

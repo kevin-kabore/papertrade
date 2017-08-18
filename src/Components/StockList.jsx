@@ -11,6 +11,7 @@ class StockList extends Component {
           current={stock.current}
           open={stock.open}
           close={stock.close}
+          quantity={stock.quantity}
           purchase={stock.purchase}
           selling={stock.selling}
           onStockTransaction={this.props.onStockTransaction}

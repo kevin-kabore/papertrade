@@ -5,9 +5,6 @@ class Stock extends Component {
     super(props);
     this.state = {
       newTransaction: false,
-      // current: this.props.current,
-      // open: this.props.open,
-      // close: this.props.close,
       purchase: '',
       selling: '',
       quantity: ''
@@ -41,12 +38,18 @@ class Stock extends Component {
   handleStockTransaction(e) {
     e.preventDefault();
     let id = this.props.uniqueID;
+    let current = (this.state.current) ? this.state.current : null
+    let open = (this.state.open) ? this.state.open : null
+    let close = (this.state.close) ? this.state.close : null
     let quantity = (this.state.quantity) ? this.state.quantity : null
-    let purchase = (this.state.purchase) ? this.state.purchase : null
-    let selling = (this.state.selling) ? this.state.selling : null
+    let purchase = this.props.current;
+    let selling = this.props.current
     let stock = {
-      purchase: purchase,
+      current: current,
+      open: open,
+      close: close,
       quantity: quantity,
+      purchase: purchase,
       selling: selling
     }
     this.props.onStockTransaction(id, stock)
@@ -67,12 +70,13 @@ class Stock extends Component {
           <li>Current: {this.props.current}</li>
           <li>Open: {this.props.open}</li>
           <li>Close: {this.props.close}</li>
+          <li>Quantity: {this.props.quantity}</li>
           <li>Purchase: {this.props.purchase}</li>
           <li>Selling: {this.props.selling}</li>
         </ul>
-        <a href='#' onClick={this.handleStockTransaction}>Buy</a>
-        <a href='#' onClick={this.handleStockTransaction}>Sell</a>
-        <a href='#' onClick={this.deleteStock}>Delete</a>
+        <button onClick={this.completeNewTransaction}>Buy</button>
+        <button onClick={this.completeNewTransaction}>Sell</button>
+        <button onClick={this.deleteStock}>Delete</button>
         {
           (this.state.newTransaction ) ?
           (
@@ -83,18 +87,24 @@ class Stock extends Component {
                 value={this.state.quantity}
                 onChange={this.handleQuantityChange}
               />
-              <input
-                type='number'
-                placeholder='Purchase Price'
-                value={this.state.purchase}
-                onChange={this.handlePurchaseChange}
-              />
-              <input
-                type='number'
-                placeholder='Selling Price'
-                value={this.state.selling}
-                onChange={this.handleSellingChange}
-              />
+              <label>
+                Purchase price
+                <input readonly
+                  type='number'
+                  placeholder='Purchase Price'
+                  value={this.state.current}
+                  onChange={this.handlePurchaseChange}
+                  />
+              </label>
+              <label> Selling price
+                <input
+                  type='number'
+                  placeholder='Selling Price'
+                  value={this.state.selling}
+                  onChange={this.handleSellingChange}
+                />
+              </label>
+
               <input
                 type='submit'
                 value='Complete Transaction'

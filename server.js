@@ -72,6 +72,7 @@ router.route('/stocks/:stock_id')
       if (err) {
         res.send(err)
       }
+      (req.body.quantity) ? stock.quantity = req.body.quantity : null;
       (req.body.purchase) ? stock.purchase = req.body.purchase : null;
       (req.body.selling) ? stock.selling = req.body.selling : null;
 
@@ -79,7 +80,7 @@ router.route('/stocks/:stock_id')
         if (err) {
           res.send(err)
         }
-        res.json({message: 'Stock has been purchased'});
+        res.json({message: 'Transaction Completed'});
       })
     })
   })

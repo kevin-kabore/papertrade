@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 
 import axios from 'axios';
 
-const APLPHA_ADVANTAGE_API = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&Symbol=AAPL&interval=1min&apikey=XITVOZ2Q9RFEFN9D'
+const APLPHA_ADVANTAGE_API = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AAPL&interval=1min&apikey=XITVOZ2Q9RFEFN9D'
+
 
 class alphaAdvantage extends Component {
   constructor() {
@@ -14,8 +15,7 @@ class alphaAdvantage extends Component {
   getData(symbol) {
     var requestUrl = `${APLPHA_ADVANTAGE_API}`
     return axios.get(requestUrl).then(res => {
-      this.setState({data: res.json()})
-      console.log(this.state)
+      console.log(res)
     })
   }
   render() {

@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
 
 class SearchStock extends Component {
-  onFormSubmit(e) {
-    e.preventDefault();
-
-    let stockSymbol = this.refs.stockSymbol.value;
-    if (stockSymbol.length > 0) {
-      this.refs.stockSymbol.value = ''
-      this.props.onSearch(stockSymbol);
-    }
+  constructor(props) {
+    super(props)
+    this.state = { searchSymbol: ''}
+    this.handleStockSearch = this.handleStockSearch.bind(this)
   }
+  handleSearchChange(e){
+    this.setState({searchSymbol: e.target.value})
+  }
+  handleStockSearch(e){
+    e.preventDefault()
+    this.props.onStockSearch(this.state.searchSymbol)
+  }
+  // componentDidMount(){
+  //   this.getStockFromApi();
+  // }
+
   render() {
     return (
       <div>
-        <form onSubmit={this.onFormSubmit}>
-          <input type="search" ref="stockSymbol" placeholder="SearchStock"/>
-          <input type='submit' value='Submit'>Get Stock Data</input>
+        <form onSubmit={this.handleStockSearch}>
+          <input
+            type='search'
+            value={this.state.searchSymbol}
+            onChange={this.handleSearchChange}
+            placeholder='Stock Symbol'/>
+
+          <input type="submit" value="Get Stock Data" />
         </form>
       </div>
     )
