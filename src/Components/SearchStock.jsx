@@ -3,8 +3,11 @@ import React, { Component } from 'react';
 class SearchStock extends Component {
   constructor(props) {
     super(props)
-    this.state = { searchSymbol: ''}
+    this.state = {
+      searchSymbol: ''
+    }
     this.handleStockSearch = this.handleStockSearch.bind(this)
+    this.handleSearchChange = this.handleSearchChange.bind(this)
   }
   handleSearchChange(e){
     this.setState({searchSymbol: e.target.value})
@@ -22,7 +25,7 @@ class SearchStock extends Component {
       <div>
         <form onSubmit={this.handleStockSearch}>
           <input
-            type='search'
+            type='text'
             value={this.state.searchSymbol}
             onChange={this.handleSearchChange}
             placeholder='Stock Symbol'/>

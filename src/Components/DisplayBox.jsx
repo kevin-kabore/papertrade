@@ -33,6 +33,7 @@ class DisplayBox extends Component {
       });
   }
   handleStockTransaction(id, stock) {
+    // Handle transaction to db
     axios.put(`${this.props.url}/${id}`, stock)
       .catch(err => {
         console.log(err);

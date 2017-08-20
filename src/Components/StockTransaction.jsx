@@ -31,10 +31,19 @@ class StockTransaction extends Component {
   }
   handleTransactionSubmit(e) {
     e.preventDefault()
-    let id = this.props.stock.uniqueID
-    let quantity = (this.state.quantity) ? this.state.quantity: null;
-    let purchase = (this.state.purchase) ? this.state.purchase : null;
-    let selling = (this.state.selling) ? this.state.selling : null;
+    //let id = this.props.stockData.uniqueID
+    let id = 1
+    let quantity;
+    let purchase;
+    let selling;
+    if (this.props.completeBuy) {
+      quantity = (this.state.quantity > 0 ) ? this.state.quantity: null;
+      purchase = this.props.open
+
+    } else if(this.props.completeSale) {
+      quantity = (this.state.quantity) ? this.state.quantity : null
+      selling = this.props.open
+    }
 
     let stock = {
       id: id,
@@ -43,6 +52,11 @@ class StockTransaction extends Component {
       selling: selling
     }
     this.props.onStockTransaction(id, stock)
+    this.setState({
+      quantity: '',
+      purchase: '',
+      selling: ''
+    })
     console.log(`Purchased ${stock.quantity} at ${stock.purchase} price.`)
     console.log(`Sold ${stock.quantity} at ${stock.selling} price.`)
   }
@@ -55,6 +69,7 @@ class StockTransaction extends Component {
               <form onSubmit={this.handleTransactionSubmit}>
                 <input type='number' placeholder='Quantity' value={this.state.quantity} onChange={this.handleQuantityChange}/>
                 <input type='number' value={this.props.open} onChange={this.handlePurchaseChange}/>
+                <input type='submit' value='Complete Purhase'/>
               </form>
             ) : null
         }
@@ -64,6 +79,7 @@ class StockTransaction extends Component {
               <form onSubmit={this.handleTransactionSubmit}>
                 <input type='number' placeholder='Quantity' value={this.state.quantity} onChange={this.handleQuantityChange}/>
                 <input type='number' value={this.props.open} onChange={this.handleSellingChange}/>
+                <input type='submit' value='Complete Sale'/>
               </form>
             ) : null
         }

@@ -93,11 +93,21 @@ class Stock extends Component {
         <button onClick={this.deleteStock}>Delete</button>
         {
           (this.state.completeBuy) ?
-            (<StockTransaction open={this.props.open} completeBuy={this.state.completeBuy} onPurchaseSubmit={this.props.onStockTransaction}/> ) : null
+            (<StockTransaction
+              open={this.props.open}
+              completeBuy={this.state.completeBuy}
+              onStockTransaction={this.props.onStockTransaction}
+              />
+            ) : null
         }
         {
           (this.state.completeSale) ?
-            (<StockTransaction open={this.props.open} completeSale={this.state.completeSale} onSaleSubmit={this.props.onStockTransaction} />) : null
+            (<StockTransaction
+              open={this.props.open}
+              completeSale={this.state.completeSale}
+              onStockTransaction={this.props.onStockTransaction}
+            />
+          ) : null
         }
 
       </div>
