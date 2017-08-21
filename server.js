@@ -47,18 +47,24 @@ router.route('/stocks')
         res.send(err)
       }
       res.json(stocks)
+      console.log(stocks)
     })
   })
   .post(function(req, res){
+  //   quantity: {type: Number, required: true},
+  //   date: {type: String, required: true},
+  //   symbol: {type: String, required: true},
+  //   open: {type: Number, required: true},
+  //   purchasePrice: {type: Number},
+  //   profit: {type: Number}
+  // })
     var stock = new Stock();
-    stock.symbol = req.body.symbol
+    stock.quantity = req.body.quantity
     stock.date = req.body.date
+    stock.symbol = req.body.symbol
     stock.open = req.body.open
-    stock.high = req.body.high
-    stock.low = req.body.low
-    stock.close = req.body.close
-    stock.volume = req.body.volume
-
+    stock.purchasePrice = req.body.purchasePrice
+    stock.profit = req.body.profit
 
     stock.save(function(err) {
       if (err) {

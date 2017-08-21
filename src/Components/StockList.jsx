@@ -7,15 +7,14 @@ class StockList extends Component {
       return (
         <Stock
           uniqueID={stock['_id']}
+          portfolio={this.props.portfolio}
           symbol={stock.symbol}
           date={stock.date}
           open={stock.open}
-          high={stock.high}
-          low={stock.low}
-          close={stock.close}
-          volume={stock.volume}
           quantity={stock.quantity}
-          onStockTransaction={this.props.onStockTransaction}
+          purchasePrice={stock.purchasePrice}
+          profit={this.profit}
+          onStockSale={this.props.onStockSale}
           onStockDelete={this.props.onStockDelete}
           key={stock['_id']}>
         </Stock>

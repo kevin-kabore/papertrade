@@ -3,17 +3,17 @@ import axios from 'axios';
 import SearchStock from './SearchStock';
 import Stock from'./Stock';
 
-const APLPHA_ADVANTAGE_API = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AAPL&interval=1min&apikey=XITVOZ2Q9RFEFN9D'
 
 class DisplaySearch extends Component {
   constructor(props) {
     super(props);
     this.state = {data: [], searched: false}
     this.handleStockSearch = this.handleStockSearch.bind(this);
-    this.handleStockTransaction = this.handleStockTransaction.bind(this);
+    this.handleStockPurchase = this.handleStockPurchase.bind(this);
   }
   handleStockSearch(symbol) {
-    console.log(symbol)
+    symbol = symbol.toUpperCase();
+    let APLPHA_ADVANTAGE_API = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=1min&apikey=XITVOZ2Q9RFEFN9D`
     let stocks = []
     axios.get(APLPHA_ADVANTAGE_API)
       .then(res => {
@@ -29,15 +29,24 @@ class DisplaySearch extends Component {
         }
         stocks.push(stock)
         this.setState({data: stocks, searched: true})
-        console.log(this.state.stock)
-
-        // console.log(res.data['Time Series (1min)'][])
+        console.log(this.state.data)
+      })
+      .catch((e) =>{
+        console.log(e)
       })
   }
-  handleStockTransaction(id, stock) {
-    console.log('transaction for stock: ' + stock )
+  handleStockPurchase(stock){
+    console.log(stock)
+    let stocks = this.state.data;
+    stock.id = Date.now();
+    let newStocks = stocks.concat([stock])
+    this.setState({data: newStocks});
+    axios.post(this.props.url, stock)
+      .catch(err => {
+        console.log(err)
+        this.setState({data: stocks})
+      });
   }
-  //add in <Stock/> passing in api data as props, and render in html
   render() {
     return(
       <div>
@@ -46,6 +55,7 @@ class DisplaySearch extends Component {
           (this.state.searched) ?
             (
               <Stock
+                searched={this.state.searched}
                 symbol={this.state.data[0].symbol}
                 date={this.state.data[0].latestQuote}
                 open={this.state.data[0].latestOpen}
@@ -53,7 +63,7 @@ class DisplaySearch extends Component {
                 low={this.state.data[0].latestLow}
                 close={this.state.data[0].latestClose}
                 volume={this.state.data[0].latestVolume}
-                onStockTransaction={this.handleStockTransaction}
+                onStockPurchase={this.handleStockPurchase}
               />
 
             ) : null

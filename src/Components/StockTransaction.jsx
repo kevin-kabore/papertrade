@@ -5,14 +5,16 @@ class StockTransaction extends Component {
     super(props);
     this.state = {
       quantity: '',
-      purchase: '',
-      selling: ''
+      purchasePrice: '',
+      sellingPrice: ''
     };
     this.deleteStock = this.deleteStock.bind(this);
     this.handleQuantityChange = this.handleQuantityChange.bind(this);
     this.handlePurchaseChange = this.handlePurchaseChange.bind(this);
     this.handleSellingChange = this.handleSellingChange.bind(this);
-    this.handleTransactionSubmit = this.handleTransactionSubmit.bind(this);
+    this.handlePurchaseSubmit = this.handlePurchaseSubmit.bind(this);
+    this.handleSaleSubmit = this.handleSaleSubmit.bind(this);
+    //this.handleTransactionSubmit = this.handleTransactionSubmit.bind(this);
   }
   deleteStock(e) {
     e.preventDefault();
@@ -24,41 +26,48 @@ class StockTransaction extends Component {
     this.setState({quantity: e.target.value})
   }
   handlePurchaseChange(e) {
-    this.setState({purchase: e.target.value})
+    this.setState({purchasePrice: e.target.value})
   }
   handleSellingChange(e) {
-    this.setState({selling: e.target.value})
+    this.setState({sellingPrice: e.target.value})
   }
-  handleTransactionSubmit(e) {
-    e.preventDefault()
-    //let id = this.props.stockData.uniqueID
-    let id = 1
-    let quantity;
-    let purchase;
-    let selling;
-    if (this.props.completeBuy) {
-      quantity = (this.state.quantity > 0 ) ? this.state.quantity: null;
-      purchase = this.props.open
-
-    } else if(this.props.completeSale) {
-      quantity = (this.state.quantity) ? this.state.quantity : null
-      selling = this.props.open
-    }
-
+  handlePurchaseSubmit(e) {
+    e.preventDefault();
+    let quantity = (this.state.quantity > 0 ) ? this.state.quantity: null;
+    let purchasePrice = this.props.open
     let stock = {
-      id: id,
+      symbol: this.props.symbol,
+      date: this.props.date,
       quantity: quantity,
-      purchase: purchase,
-      selling: selling
+      purchasePrice: purchasePrice
     }
-    this.props.onStockTransaction(id, stock)
+    this.props.onStockPurchase(stock)
+    console.log(`Purchased ${stock.quantity} ${stock.symbol} stocks at ${stock.purchasePrice} dollars.`)
+
     this.setState({
       quantity: '',
-      purchase: '',
-      selling: ''
+      purchasePrice: '',
     })
-    console.log(`Purchased ${stock.quantity} at ${stock.purchase} price.`)
-    console.log(`Sold ${stock.quantity} at ${stock.selling} price.`)
+  }
+  handleSaleSubmit(e) {
+    e.preventDefault(e);
+    let quantity = (this.state.quantity > 0) ? this.state.quantity : null;
+    let sellingPrice = this.props.open;
+    let remainingQuantity = this.props.quantity - quantity;
+
+    let stock = {
+      id: this.props.uniqueID,
+      date: this.props.date,
+      quantity: remainingQuantity,
+      sellingPrice: sellingPrice
+    }
+    this.props.onStockSale(stock.id, stock);
+
+    console.log(`Sold ${stock.quantity}  at ${stock.sellingPrice} price.`)
+    this.setState({
+      quantity: '',
+      sellingPrice: ''
+    })
   }
   render() {
     return (
@@ -66,7 +75,7 @@ class StockTransaction extends Component {
         {
           (this.props.completeBuy) ?
             (
-              <form onSubmit={this.handleTransactionSubmit}>
+              <form onSubmit={this.handlePurchaseSubmit}>
                 <input type='number' placeholder='Quantity' value={this.state.quantity} onChange={this.handleQuantityChange}/>
                 <input type='number' value={this.props.open} onChange={this.handlePurchaseChange}/>
                 <input type='submit' value='Complete Purhase'/>
@@ -76,7 +85,7 @@ class StockTransaction extends Component {
         {
           (this.props.completeSale) ?
             (
-              <form onSubmit={this.handleTransactionSubmit}>
+              <form onSubmit={this.handleSaleSubmit}>
                 <input type='number' placeholder='Quantity' value={this.state.quantity} onChange={this.handleQuantityChange}/>
                 <input type='number' value={this.props.open} onChange={this.handleSellingChange}/>
                 <input type='submit' value='Complete Sale'/>
