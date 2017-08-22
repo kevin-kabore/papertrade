@@ -51,34 +51,52 @@ class StockTransaction extends Component {
       purchasePrice: '',
     })
   }
+
+
+
+
   handleSaleSubmit(e) {
     e.preventDefault();
 
-    let symbol = this.props.symbol
     let quantity = (this.state.quantity > 0 && this.state.quantity <= this.props.quantity) ? this.state.quantity : null;
-    let APLPHA_ADVANTAGE_API = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=1min&apikey=XITVOZ2Q9RFEFN9D`
+    let remainingQuantity = this.props.quantity - quantity;
+    let profit =  (quantity * this.props.currentPrice) - (quantity * this.props.purchasePrice);
 
-    axios.get(APLPHA_ADVANTAGE_API)
-      .then(res => {
-        let latestQuote = res.data['Meta Data']['3. Last Refreshed'];
-        let latestOpen = res.data['Time Series (1min)'][`${latestQuote}`]['1. open']
-        let remainingQuantity = this.props.quantity - quantity;
-        let profit =  (quantity * latestOpen) - (quantity * this.props.open);
+    let stock = {
+      id: this.props.uniqueID,
+      quantity: remainingQuantity,
+      profit: profit
+    }
 
-        let stock = {
-          id: this.props.uniqueID,
-          quantity: remainingQuantity,
-          profit: profit
-        }
-        console.log(`Selling: ${quantity} ${symbol} stocks:`)
-        console.log(`Date: ${latestQuote}`)
-        console.log(`Price: ${latestOpen} price:`)
-        console.log(stock)
-        this.props.onStockSale(stock.id, stock);
-      })
-      .catch(e => {
-        console.log(e)
-      })
+    console.log(`Selling: ${quantity} ${this.props.symbol} stocks:`)
+    console.log(`Current Date: ${this.props.currentDate}`)
+    console.log(`Current Price: ${this.props.currentPrice}`)
+    console.log(stock)
+    this.props.onStockSale(stock.id, stock);
+
+    // let APLPHA_ADVANTAGE_API = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=1min&apikey=XITVOZ2Q9RFEFN9D`
+    //
+    // axios.get(APLPHA_ADVANTAGE_API)
+    //   .then(res => {
+    //     let latestQuote = res.data['Meta Data']['3. Last Refreshed'];
+    //     let latestOpen = res.data['Time Series (1min)'][`${latestQuote}`]['1. open']
+    //     let remainingQuantity = this.props.quantity - quantity;
+    //     let profit =  (quantity * latestOpen) - (quantity * this.props.open);
+    //
+    //     let stock = {
+    //       id: this.props.uniqueID,
+    //       quantity: remainingQuantity,
+    //       profit: profit
+    //     }
+    //     console.log(`Selling: ${quantity} ${symbol} stocks:`)
+    //     console.log(`Date: ${latestQuote}`)
+    //     console.log(`Price: ${latestOpen} price:`)
+    //     console.log(stock)
+    //     this.props.onStockSale(stock.id, stock);
+    //   })
+    //   .catch(e => {
+    //     console.log(e)
+    //   })
 
     this.setState({
       quantity: '',
@@ -128,7 +146,7 @@ class StockTransaction extends Component {
             (
               <form onSubmit={this.handleSaleSubmit}>
                 <input type='number' placeholder='Quantity' value={this.state.quantity} onChange={this.handleQuantityChange}/>
-                <input type='number' value={this.props.open} onChange={this.handleSellingChange}/>
+                <input type='number' value={this.props.currentPrice} onChange={this.handleSellingChange}/>
                 <input type='submit' value='Complete Sale'/>
               </form>
             ) : null

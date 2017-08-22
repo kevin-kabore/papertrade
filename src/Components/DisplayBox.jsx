@@ -8,6 +8,7 @@ class DisplayBox extends Component {
     super(props);
     this.state = { data: [], portfolio: true };
     this.loadStocksFromServer = this.loadStocksFromServer.bind(this);
+    // handleGetCurrent = this.bind.handleGetCurrent.bind(this);
     this.handleStockSale = this.handleStockSale.bind(this);
     this.handleStockDelete = this.handleStockDelete.bind(this);
   }
@@ -18,6 +19,9 @@ class DisplayBox extends Component {
         this.setState({data: res.data})
       })
   }
+  // handleGetCurrent(current){
+  //
+  // }
   handleStockSale(id, stock) {
     axios.put(`${this.props.url}/${id}`, stock)
       .catch(err => {
