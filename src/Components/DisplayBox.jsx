@@ -23,6 +23,7 @@ class DisplayBox extends Component {
       .catch(err => {
         console.log(err);
       })
+    this.loadStocksFromServer();
   }
   handleStockDelete(id) {
     axios.delete(`${this.props.url}/${id}`)
@@ -36,7 +37,6 @@ class DisplayBox extends Component {
   }
   componentDidMount() {
     this.loadStocksFromServer();
-    setInterval(this.loadStocksFromServer, this.props.pollInterval)
   }
   render() {
     return (

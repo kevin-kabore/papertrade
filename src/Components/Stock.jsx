@@ -51,10 +51,12 @@ class Stock extends Component {
             (
               <div>
                 <h1>{this.props.symbol}</h1>
+                <p>Date: </p>
+                <p>Current Price:</p>
                 <p>Purchase Date: {this.props.date}</p>
+                <p>Purchase Price: {this.props.purchasePrice}</p>
                 <ul>
                   <li>Quantity: {this.props.quantity}</li>
-                  <li>Purchase Price: {this.props.purchasePrice}</li>
                   <li>Profit: {this.props.profit}</li>
                 </ul>
                 <button onClick={this.completeSale}>Sell</button>

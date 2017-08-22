@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class StockTransaction extends Component {
   constructor(props) {
@@ -14,7 +15,6 @@ class StockTransaction extends Component {
     this.handleSellingChange = this.handleSellingChange.bind(this);
     this.handlePurchaseSubmit = this.handlePurchaseSubmit.bind(this);
     this.handleSaleSubmit = this.handleSaleSubmit.bind(this);
-    //this.handleTransactionSubmit = this.handleTransactionSubmit.bind(this);
   }
   deleteStock(e) {
     e.preventDefault();
@@ -41,7 +41,7 @@ class StockTransaction extends Component {
       symbol: this.props.symbol,
       open: this.props.open,
       purchasePrice: purchasePrice,
-      profit: 0 
+      profit: 0
     }
     this.props.onStockPurchase(stock)
     console.log(`Purchased ${stock.quantity} ${stock.symbol} stocks at ${stock.purchasePrice} dollars.`)
@@ -53,30 +53,63 @@ class StockTransaction extends Component {
   }
   handleSaleSubmit(e) {
     e.preventDefault();
+
+    let symbol = this.props.symbol
     let quantity = (this.state.quantity > 0 && this.state.quantity <= this.props.quantity) ? this.state.quantity : null;
+    let APLPHA_ADVANTAGE_API = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=1min&apikey=XITVOZ2Q9RFEFN9D`
 
-    //req to api url to get current price?
-    let sellingPrice = this.props.open;
+    axios.get(APLPHA_ADVANTAGE_API)
+      .then(res => {
+        let latestQuote = res.data['Meta Data']['3. Last Refreshed'];
+        let latestOpen = res.data['Time Series (1min)'][`${latestQuote}`]['1. open']
+        let remainingQuantity = this.props.quantity - quantity;
+        let profit =  (quantity * latestOpen) - (quantity * this.props.open);
 
-    let remainingQuantity = this.props.quantity - quantity;
-    let profit =  (quantity * sellingPrice) - (quantity * 1000);
-    console.log('Profit = ' + profit)
-    //profit = (this.props.)
-    let stock = {
-      id: this.props.uniqueID,
-      date: this.props.date,
-      quantity: remainingQuantity,
-      profit: profit
-      // sellingPrice: sellingPrice
-    }
-    this.props.onStockSale(stock.id, stock);
+        let stock = {
+          id: this.props.uniqueID,
+          quantity: remainingQuantity,
+          profit: profit
+        }
+        console.log(`Selling: ${quantity} ${symbol} stocks:`)
+        console.log(`Date: ${latestQuote}`)
+        console.log(`Price: ${latestOpen} price:`)
+        console.log(stock)
+        this.props.onStockSale(stock.id, stock);
+      })
+      .catch(e => {
+        console.log(e)
+      })
 
-    console.log(`Sold ${quantity} at ${sellingPrice} price. You have ${stock.quantity} ${this.props.symbol} stocks remaining.`)
     this.setState({
       quantity: '',
       sellingPrice: ''
     })
   }
+
+    // let quantity = (this.state.quantity > 0 && this.state.quantity <= this.props.quantity) ? this.state.quantity : null;
+    //
+    // //req to api url to get current price?
+    // let sellingPrice = this.props.open;
+    //
+    // let remainingQuantity = this.props.quantity - quantity;
+    // let profit =  (quantity * sellingPrice) - (quantity * 1000);
+    // console.log('Profit = ' + profit)
+    // //profit = (this.props.)
+    // let stock = {
+    //   id: this.props.uniqueID,
+    //   date: this.props.date,
+    //   quantity: remainingQuantity,
+    //   profit: profit
+    //   // sellingPrice: sellingPrice
+    // }
+    // this.props.onStockSale(stock.id, stock);
+    //
+    // console.log(`Sold ${quantity} at ${sellingPrice} price. You have ${stock.quantity} ${this.props.symbol} stocks remaining.`)
+  //   this.setState({
+  //     quantity: '',
+  //     sellingPrice: ''
+  //   })
+  // }
   render() {
     return (
       <div>

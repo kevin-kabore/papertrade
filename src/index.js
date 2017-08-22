@@ -11,8 +11,7 @@ ReactDOM.render(
   document.getElementById('displaySearch'));
 ReactDOM.render(
   <DisplayBox
-    url='http://localhost:3001/api/stocks'
-    pollInterval={10000} />,
+    url='http://localhost:3001/api/stocks' />,
   document.getElementById('displayBox')
 );
 

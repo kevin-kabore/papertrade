@@ -44,8 +44,8 @@ class DisplaySearch extends Component {
     axios.post(this.props.url, stock)
       .catch(err => {
         console.log(err)
-        // this.setState({data: stocks})
       });
+    this.loadStocksFromServer()
   }
   render() {
     return(
