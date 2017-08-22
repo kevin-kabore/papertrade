@@ -7,11 +7,12 @@ import DisplaySearch from './Components/DisplaySearch';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-  <DisplaySearch />,
+  <DisplaySearch url='http://localhost:3001/api/stocks' />,
   document.getElementById('displaySearch'));
 ReactDOM.render(
   <DisplayBox
-    url='http://localhost:3001/api/stocks' />,
+    url='http://localhost:3001/api/stocks'
+    pollInterval={10000} />,
   document.getElementById('displayBox')
 );
 

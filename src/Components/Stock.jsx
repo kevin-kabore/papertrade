@@ -78,6 +78,9 @@ class Stock extends Component {
             (<StockTransaction
               uniqueID={this.props.uniqueID}
               open={this.props.open}
+              symbol={this.props.symbol}
+              quantity={this.props.quantity}
+              purchasePrice={this.props.purchasePrice}
               completeSale={this.state.completeSale}
               onStockSale={this.props.onStockSale}
             />

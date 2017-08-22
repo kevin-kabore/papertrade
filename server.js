@@ -51,13 +51,6 @@ router.route('/stocks')
     })
   })
   .post(function(req, res){
-  //   quantity: {type: Number, required: true},
-  //   date: {type: String, required: true},
-  //   symbol: {type: String, required: true},
-  //   open: {type: Number, required: true},
-  //   purchasePrice: {type: Number},
-  //   profit: {type: Number}
-  // })
     var stock = new Stock();
     stock.quantity = req.body.quantity
     stock.date = req.body.date
@@ -80,9 +73,8 @@ router.route('/stocks/:stock_id')
       if (err) {
         res.send(err)
       }
-      (req.body.quantity) ? stock.quantity = req.body.quantity : null;
-      (req.body.purchase) ? stock.purchase = req.body.purchase : null;
-      (req.body.selling) ? stock.selling = req.body.selling : null;
+      (req.body.quantity >= 0) ? stock.quantity = req.body.quantity : null;
+      (req.body.profit) ? stock.profit = req.body.profit : null
 
       stock.save(function(err) {
         if (err) {

@@ -36,10 +36,12 @@ class StockTransaction extends Component {
     let quantity = (this.state.quantity > 0 ) ? this.state.quantity: null;
     let purchasePrice = this.props.open
     let stock = {
-      symbol: this.props.symbol,
-      date: this.props.date,
       quantity: quantity,
-      purchasePrice: purchasePrice
+      date: this.props.date,
+      symbol: this.props.symbol,
+      open: this.props.open,
+      purchasePrice: purchasePrice,
+      profit: 0 
     }
     this.props.onStockPurchase(stock)
     console.log(`Purchased ${stock.quantity} ${stock.symbol} stocks at ${stock.purchasePrice} dollars.`)
@@ -50,20 +52,26 @@ class StockTransaction extends Component {
     })
   }
   handleSaleSubmit(e) {
-    e.preventDefault(e);
-    let quantity = (this.state.quantity > 0) ? this.state.quantity : null;
-    let sellingPrice = this.props.open;
-    let remainingQuantity = this.props.quantity - quantity;
+    e.preventDefault();
+    let quantity = (this.state.quantity > 0 && this.state.quantity <= this.props.quantity) ? this.state.quantity : null;
 
+    //req to api url to get current price?
+    let sellingPrice = this.props.open;
+
+    let remainingQuantity = this.props.quantity - quantity;
+    let profit =  (quantity * sellingPrice) - (quantity * 1000);
+    console.log('Profit = ' + profit)
+    //profit = (this.props.)
     let stock = {
       id: this.props.uniqueID,
       date: this.props.date,
       quantity: remainingQuantity,
-      sellingPrice: sellingPrice
+      profit: profit
+      // sellingPrice: sellingPrice
     }
     this.props.onStockSale(stock.id, stock);
 
-    console.log(`Sold ${stock.quantity}  at ${stock.sellingPrice} price.`)
+    console.log(`Sold ${quantity} at ${sellingPrice} price. You have ${stock.quantity} ${this.props.symbol} stocks remaining.`)
     this.setState({
       quantity: '',
       sellingPrice: ''

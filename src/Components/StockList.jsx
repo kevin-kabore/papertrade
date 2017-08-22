@@ -13,7 +13,7 @@ class StockList extends Component {
           open={stock.open}
           quantity={stock.quantity}
           purchasePrice={stock.purchasePrice}
-          profit={this.profit}
+          profit={stock.profit}
           onStockSale={this.props.onStockSale}
           onStockDelete={this.props.onStockDelete}
           key={stock['_id']}>

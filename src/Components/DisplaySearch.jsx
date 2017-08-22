@@ -36,15 +36,15 @@ class DisplaySearch extends Component {
       })
   }
   handleStockPurchase(stock){
-    console.log(stock)
-    let stocks = this.state.data;
-    stock.id = Date.now();
-    let newStocks = stocks.concat([stock])
-    this.setState({data: newStocks});
+    // console.log(stock)
+    // let stocks = this.state.data;
+    // stock.id = Date.now();
+    // let newStocks = stocks.concat([stock])
+    // this.setState({data: newStocks});
     axios.post(this.props.url, stock)
       .catch(err => {
         console.log(err)
-        this.setState({data: stocks})
+        // this.setState({data: stocks})
       });
   }
   render() {
